@@ -1,7 +1,6 @@
 /** Represents a user in a social network. A user is characterized by a name,
  *  a list of user names that s/he follows, and the list's size. */
- public class User {
-
+public class User {
     // Maximum number of users that a user can follow
     static int maxfCount = 10;
 
@@ -12,8 +11,8 @@
     /** Creates a user with an empty list of followees. */
     public User(String name) {
         this.name = name;
-        follows = new String[maxfCount]; 
-        fCount = 0;                      
+        follows = new String[maxfCount]; // fixed-size array for storing followees
+        fCount = 0;                      // initial number of followees
     }
 
     /** Creates a user with some followees. The only purpose of this constructor is 
@@ -43,22 +42,21 @@
 
     /** If this user follows the given name, returns true; otherwise returns false. */
     public boolean follows(String name) {
-        for(int i =0; i<this.follows.length; i++) {
-            if (this.follows[i] == null)
+        for(int i =0; i<this.follows.length; i++){
+            if(this.follows[i]== null)
                 return false;
-
-            if (this.follows[i].equalsIgnoreCase(name) == true)
+            
+            if(this.follows[i].equalsIgnoreCase(name)== true)
                 return true;
-
         }
         return false;
 
     }
-    /** Makes this user follow the given name. If successful, returns true.
+    /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
         for(int i =0; i<follows.length;i++){
-            if(follows[i]== null){
+            if(follows[i]== null) {
                 follows[i] = name;
                 fCount++;
                 return true;
@@ -72,34 +70,42 @@
     /** Removes the given name from the follows list of this user. If successful, returns true.
      *  If the name is not in the list, does nothing and returns false. */
     public boolean removeFollowee(String name) {
-        int num = -1;
-        for(int i =0; i<follows.length; i++) {
+        int num= -1;
+        for(int i =0; i<follows.length; i++)
+        {
             if(follows[i] != null &&follows[i].equalsIgnoreCase(name) == true) {
-                num = i;
+                num= i;
                 break;
             }
         }
         if(num== -1)
+        {
             return false;
-        
+        }
         if(num==follows.length -1)
+        {
             follows[num] = null;
-        
-        for(int i =num ; i<follows.length-1; i++)
+        }
+        for(int i =num; i<follows.length-1; i++)
+        {
             follows[i] = follows[i+1];
-        
+        }
         follows[follows.length-1] = null;
         fCount--;
         return true;
+
     }
 
     /** Counts the number of users that both this user and the other user follow.
      /*  Notice: This is the size of the intersection of the two follows lists. */
     public int countMutual(User other) {
         int count = 0;
-        for(int i =0; i<follows.length; i++) {
-            for(int j =0; j<other.follows.length;j++) {
-                if(follows[i].equalsIgnoreCase(other.follows[j])== true && follows[i]!= null) {
+        for(int i =0; i<follows.length; i++)
+        {
+            for(int j =0; j<other.follows.length;j++)
+            {
+                if(follows[i]!= null && follows[i].equalsIgnoreCase(other.follows[j])== true)
+                {
                     count++;
                     break;
                 }
@@ -113,20 +119,21 @@
     public boolean isFriendOf(User other) {
         boolean thisFollowsOther = false;
         boolean otherFollowsThis = false;
-        
+
         for (int i = 0; i < follows.length; i++) {
-            if (follows[i].equalsIgnoreCase(other.name) && follows[i] != null) {
+            if (follows[i] != null && follows[i].equalsIgnoreCase(other.name)) {
                 thisFollowsOther = true;
                 break;
             }
         }
-        
+
         for (int i = 0; i < other.follows.length; i++) {
             if (other.follows[i] != null && other.follows[i].equalsIgnoreCase(this.name)) {
                 otherFollowsThis = true;
                 break;
             }
         }
+
         return thisFollowsOther && otherFollowsThis;
     }
     /** Returns this user's name, and the names that s/he follows. */
